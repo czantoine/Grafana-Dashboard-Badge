@@ -5,7 +5,7 @@ const axios = require('axios');
 const { makeBadge } = require('badge-maker');
 
 const app = express();
-const port = 3000;
+const port = 3002;
 
 // Check if we can reach Grafana's website
 const checkGrafanaWebsite = async () => {
@@ -74,7 +74,9 @@ app.get('/badge', async (req, res) => {
             ]
         });
         const page = await browser.newPage();
-        await page.goto(`https://grafana.com/orgs/${user}/dashboards`);
+        await page.goto(`https://grafana.com/orgs/${user}/dashboards`, {
+            timeout: 120000
+        });
 
         const downloads = await page.evaluate((dashboard) => {
             const dashboardElements = Array.from(document.querySelectorAll('div.cursor-reset'));
