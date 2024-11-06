@@ -1,5 +1,6 @@
 const express = require('express');
 const puppeteer = require('puppeteer');
+const stealth = require('puppeteer-extra-plugin-stealth')();
 const axios = require('axios'); 
 const { makeBadge } = require('badge-maker');
 
@@ -162,6 +163,6 @@ app.get('/badge', async (req, res) => {
     }
 });
 
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+app.listen(port, '0.0.0.0', () => {
+    console.log(`Server running at http://0.0.0.0:${port}`);
 });
