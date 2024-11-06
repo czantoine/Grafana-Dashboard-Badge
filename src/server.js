@@ -1,9 +1,26 @@
 const express = require('express');
 const puppeteer = require('puppeteer');
+const axios = require('axios'); 
 const { makeBadge } = require('badge-maker');
 
 const app = express();
 const port = 3000;
+
+// Check if we can reach Grafana's website
+const checkGrafanaWebsite = async () => {
+    try {
+        const response = await axios.get('https://grafana.com/');
+        if (response.status === 200) {
+            console.log('Successfully reached https://grafana.com/');
+        } else {
+            console.log('Failed to reach https://grafana.com/', response.status);
+        }
+    } catch (error) {
+        console.log('Error while accessing https://grafana.com/', error.message);
+    }
+};
+
+checkGrafanaWebsite();
 
 // Middleware to add CORS headers
 app.use((req, res, next) => {
