@@ -1,0 +1,27 @@
+{
+  "name": "grafana-badge-service",
+  "version": "1.0.0",
+  "description": "A service to generate badges for Grafana dashboard downloads",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "badge-maker": "^4.0.0",
+    "express": "^4.21.0",
+    "puppeteer": "^23.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "license": "MIT",
+  "author": "Antoine CICHOWICZ",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/czantoine/Grafana-Dashboard-Badge"
+  }
+}
