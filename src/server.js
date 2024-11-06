@@ -64,7 +64,14 @@ app.get('/badge', async (req, res) => {
 
     try {
         const browser = await puppeteer.launch({
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
+            args: [
+                "--disable-setuid-sandbox",
+                "--no-sandbox",
+                "--single-process",
+                "--no-zygote",
+                "--disable-gpu",
+                "--disable-dev-shm-usage"
+            ]
         });
         const page = await browser.newPage();
         await page.goto(`https://grafana.com/orgs/${user}/dashboards`);
