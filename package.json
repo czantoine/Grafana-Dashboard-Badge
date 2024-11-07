@@ -4,7 +4,7 @@
   "description": "",
   "main": "badge.js",
   "scripts": {
-    "start": "node badge.js"
+    "start": "node functions/badge.js"
   },
   "keywords": [],
   "author": "Antoine CICHOWICZ",

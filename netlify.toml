@@ -7,7 +7,7 @@
   included_files = ["functions/*"]
 
 [context.production]
-  command = "npm install && npm run"
+  command = "npm start"
 
 [[redirects]]
   from = "/api/*"
