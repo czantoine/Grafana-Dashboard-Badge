@@ -4,7 +4,7 @@
   "description": "",
   "main": "api.js",
   "scripts": {
-    "build": "netlify deploy --prod"
+    "build": "npx puppeteer browsers install chrome && netlify deploy --prod"
   },
   "keywords": [],
   "author": "Antoine CICHOWICZ",
@@ -13,6 +13,7 @@
     "axios": "^1.7.7",
     "badge-maker": "^4.1.0",
     "express": "^4.21.1",
+    "fs": "^0.0.1-security",
     "netlify-cli": "^17.37.2",
     "netlify-lambda": "^0.4.0",
     "puppeteer": "^23.7.0",

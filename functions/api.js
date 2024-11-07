@@ -1,10 +1,11 @@
 const express = require('express');
 const puppeteer = require('puppeteer-extra');
 const serverless = require('serverless-http');
-const axios = require('axios'); 
+const axios = require('axios');
 const { makeBadge } = require('badge-maker');
 const randomUseragent = require('random-useragent'); // Random User-Agent Library
 const StealthPlugin = require('puppeteer-extra-plugin-stealth'); // Puppeteer stealth plugin
+const fs = require('fs');
 
 puppeteer.use(StealthPlugin()); // Apply the stealth plugin
 
@@ -94,10 +95,12 @@ router.get('/badge', async (req, res) => {
         await page.setUserAgent(userAgent);
         await page.setExtraHTTPHeaders(commonHeaders);
 
-        // Add this line to prevent bot detection by overriding navigator.webdriver
-        await page.evaluateOnNewDocument(() => {
-            Object.defineProperty(navigator, 'webdriver', { get: () => false });
-        });
+        // Load cookies from file if available
+        const cookiesPath = 'cookies.json';
+        if (fs.existsSync(cookiesPath)) {
+            const cookies = JSON.parse(fs.readFileSync(cookiesPath));
+            await page.setCookie(...cookies);
+        }
 
         // Hide automation detection (Stealth Plugin)
         await page.evaluateOnNewDocument(() => {
@@ -106,9 +109,22 @@ router.get('/badge', async (req, res) => {
             });
         });
 
+        // Go to the dashboard page
         await page.goto(`https://grafana.com/orgs/${user}/dashboards`, {
             timeout: 120000
         });
+
+        // Check if we are logged in, if not, login and save cookies
+        const loginButton = await page.$('button.login-button'); // Adjust selector as needed
+        if (loginButton) {
+            console.log('Not logged in, logging in now...');
+            // Login steps: enter credentials, click login button, etc.
+
+            // After logging in, save cookies
+            const cookies = await page.cookies();
+            fs.writeFileSync(cookiesPath, JSON.stringify(cookies));
+            console.log('Cookies saved after login');
+        }
 
         const downloads = await page.evaluate((dashboard) => {
             const dashboardElements = Array.from(document.querySelectorAll('div.cursor-reset'));
