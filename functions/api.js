@@ -1,8 +1,12 @@
 const express = require('express');
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-extra');
 const serverless = require('serverless-http');
 const axios = require('axios'); 
 const { makeBadge } = require('badge-maker');
+const randomUseragent = require('random-useragent'); // Random User-Agent Library
+const StealthPlugin = require('puppeteer-extra-plugin-stealth'); // Puppeteer stealth plugin
+
+puppeteer.use(StealthPlugin()); // Apply the stealth plugin
 
 const app = express();
 const router = express.Router();
@@ -65,6 +69,7 @@ router.get('/badge', async (req, res) => {
 
     try {
         const browser = await puppeteer.launch({
+            headless: true,  // Ensure it runs in headless mode
             args: [
                 "--disable-setuid-sandbox",
                 "--no-sandbox",
@@ -74,7 +79,33 @@ router.get('/badge', async (req, res) => {
                 "--disable-dev-shm-usage"
             ]
         });
+
         const page = await browser.newPage();
+
+        // Set randomized User-Agent and headers to avoid bot detection
+        const userAgent = randomUseragent.getRandom(); // Get random User-Agent
+        const commonHeaders = {
+            'Accept-Language': 'en-US,en;q=0.9',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Cache-Control': 'no-cache',
+            'Upgrade-Insecure-Requests': '1',
+        };
+
+        await page.setUserAgent(userAgent);
+        await page.setExtraHTTPHeaders(commonHeaders);
+
+        // Add this line to prevent bot detection by overriding navigator.webdriver
+        await page.evaluateOnNewDocument(() => {
+            Object.defineProperty(navigator, 'webdriver', { get: () => false });
+        });
+
+        // Hide automation detection (Stealth Plugin)
+        await page.evaluateOnNewDocument(() => {
+            Object.defineProperty(navigator, 'webdriver', {
+                get: () => false,
+            });
+        });
+
         await page.goto(`https://grafana.com/orgs/${user}/dashboards`, {
             timeout: 120000
         });
