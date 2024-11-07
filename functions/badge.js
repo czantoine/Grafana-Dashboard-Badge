@@ -4,7 +4,7 @@ const axios = require('axios');
 const { makeBadge } = require('badge-maker');
 
 const app = express();
-const port = 3002;
+const port = 3000;
 
 // Check if we can reach Grafana's website
 const checkGrafanaWebsite = async () => {
