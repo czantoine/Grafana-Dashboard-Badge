@@ -2,9 +2,9 @@
   "name": "functions",
   "version": "1.0.0",
   "description": "",
-  "main": "badge.js",
+  "main": "api.js",
   "scripts": {
-    "start": "node functions/badge.js"
+    "build": "netlify deploy --prod"
   },
   "keywords": [],
   "author": "Antoine CICHOWICZ",
@@ -13,6 +13,9 @@
     "axios": "^1.7.7",
     "badge-maker": "^4.1.0",
     "express": "^4.21.1",
-    "puppeteer": "^23.7.0"
+    "netlify-cli": "^17.37.2",
+    "netlify-lambda": "^0.4.0",
+    "puppeteer": "^23.7.0",
+    "serverless-http": "^2.7.0"
   }
 }

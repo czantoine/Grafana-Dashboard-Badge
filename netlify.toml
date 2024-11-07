@@ -1,15 +1,8 @@
 [build]
   functions = "functions"
-  publish = "public"
-
-[functions]
-  node_bundler = "esbuild"
-  included_files = ["functions/*"]
-
-[context.production]
-  command = "npm start"
 
 [[redirects]]
   from = "/api/*"
-  to = "/.netlify/functions/:splat"
+  to = "/.netlify/functions/api.js/:splat"
   status = 200
+  force = true
