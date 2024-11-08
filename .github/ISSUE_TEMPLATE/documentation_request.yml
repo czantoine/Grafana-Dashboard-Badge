@@ -1,0 +1,27 @@
+name: Documentation Request 📚
+description: Request for additional or improved documentation
+labels: documentation
+assignees: ''
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Description
+        Please describe the documentation improvement or request in detail. 🖋️
+
+  - type: input
+    attributes:
+      label: What is missing or unclear in the documentation? ❓
+      placeholder: Provide details on what needs clarification or addition.
+
+  - type: input
+    attributes:
+      label: Why is this documentation important? 💡
+      placeholder: Explain why this change would improve the project.
+
+  - type: input
+    attributes:
+      label: Suggested solution (optional) 🛠️
+      placeholder: If you have a suggestion, provide it here.
+

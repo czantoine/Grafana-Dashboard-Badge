@@ -1,0 +1,32 @@
+name: Help Wanted 🙋‍♂️🙋‍♀️
+description: Ask for help or contributions on a specific task or area
+labels: help wanted
+assignees: ''
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Task Description
+        Please provide a detailed description of the task or area where help is needed. 📝
+
+  - type: input
+    attributes:
+      label: What kind of help do you need? 🛠️
+      placeholder: Specify what kind of assistance is required (bug fix, feature implementation, etc.)
+
+  - type: input
+    attributes:
+      label: What is the current status of the task? 🔄
+      placeholder: Include any progress made so far or challenges faced.
+
+  - type: input
+    attributes:
+      label: Resources or information to get started 📚
+      placeholder: Provide links, documents, or any useful information for contributors.
+
+  - type: input
+    attributes:
+      label: Additional context 📝
+      placeholder: Any additional information that could be helpful.
+

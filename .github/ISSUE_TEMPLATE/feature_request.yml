@@ -1,0 +1,32 @@
+name: Feature Request 🚀
+description: Suggest a new feature or enhancement
+labels: enhancement
+assignees: ''
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Feature Description
+        Provide a detailed description of the feature or enhancement you're requesting. ✨
+
+  - type: input
+    attributes:
+      label: What problem does this feature solve? 🔍
+      placeholder: Explain the issue that the feature will address.
+
+  - type: input
+    attributes:
+      label: How should this feature work? 🔧
+      placeholder: Provide your vision of how this feature should be implemented.
+
+  - type: input
+    attributes:
+      label: Why is this feature important? 🌟
+      placeholder: Explain the importance or benefits of this feature.
+
+  - type: input
+    attributes:
+      label: Any additional context or resources (optional) 🔗
+      placeholder: Add any related links or files.
+
