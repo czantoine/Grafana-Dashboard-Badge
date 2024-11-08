@@ -1,7 +1,7 @@
 name: Help Wanted 🙋‍♂️🙋‍♀️
 description: Ask for help or contributions on a specific task or area
+title: "[HELP] Describe the help needed"
 labels: help wanted
-assignees: ''
 
 body:
   - type: markdown

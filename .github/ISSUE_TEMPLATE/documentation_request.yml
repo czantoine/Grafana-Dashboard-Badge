@@ -1,7 +1,7 @@
 name: Documentation Request 📚
 description: Request for additional or improved documentation
+title: "[DOC] Documentation request description"
 labels: documentation
-assignees: ''
 
 body:
   - type: markdown
