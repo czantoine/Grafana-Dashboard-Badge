@@ -33,7 +33,6 @@ Download Dashboard Grafana:
 4. [Badge Color Scheme](#badge-color-scheme)
 5. [Netlify Deployment](#netlify-deployment)
 6. [Debugging Netlify Functions Locally](#debugging-netlify-functions-locally)
-7. [Known Issues](#known-issues)
 
 ## Project Overview
 
