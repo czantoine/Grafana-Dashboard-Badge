@@ -40,7 +40,7 @@ router.get('/badge', async (req, res) => {
 
     try {
         const response = await axios.get(`https://grafana.com/api/dashboards/${id_dashboard}`);
-        const { slug, downloads } = response.data;
+        const { downloads } = response.data;
 
         // Set badge color based on downloads with ultra-fine granularity
         let color = 'blue';
@@ -107,6 +107,56 @@ router.get('/badge', async (req, res) => {
         const format = {
             label: 'Dashboard Downloads',
             message: downloads.toString(),
+            color: color,
+        };
+
+        const svg = makeBadge(format);
+
+        res.setHeader('Content-Type', 'image/svg+xml');
+        res.send(svg);
+    } catch (error) {
+        res.status(500).json({
+            error: 'Error retrieving data',
+            message: error.message
+        });
+    }
+});
+
+// Revision badge endpoint to generate SVG badge for revision
+router.get('/revision-badge', async (req, res) => {
+    const { id_dashboard } = req.query;
+
+    // Check if id_dashboard parameter is provided
+    if (!id_dashboard) {
+        return res.status(400).json({
+            error: 'Missing Parameters',
+            message: 'The "id_dashboard" query parameter is required.'
+        });
+    }
+
+    try {
+        const response = await axios.get(`https://grafana.com/api/dashboards/${id_dashboard}`);
+        const { revision } = response.data;
+
+        // Set badge color based on revision
+        let color = 'blue';
+        if (revision >= 50) {
+            color = 'gold'; // High Revision
+        } else if (revision >= 40) {
+            color = 'pink'; // Significant Revision
+        } else if (revision >= 30) {
+            color = 'coral'; // Major Revision
+        } else if (revision >= 20) {
+            color = 'purple'; // Moderate Revision
+        } else if (revision >= 10) {
+            color = 'cyan'; // Minor Revision
+        } else {
+            color = 'green'; // Low Revision
+        }
+
+        const format = {
+            label: 'Revision',
+            message: revision.toString(),
             color: color,
         };
 

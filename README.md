@@ -8,7 +8,7 @@
 	<img alt="Last Commit" src="https://img.shields.io/github/last-commit/czantoine/Grafana-Dashboard-Badge">
 </p>
 
-This project retrieves the download count for a specific Grafana dashboard and generates a badge to display it. This badge provides an easy way to visualize the popularity of your Grafana dashboards.
+This project retrieves the download count for a specific Grafana dashboard and generates a badge to display it. This badge provides an easy way to visualize the popularity of your Grafana dashboards and more.
 
 Netlify deployment:
 
@@ -20,7 +20,11 @@ Netlify deployment:
 
 Download Dashboard Grafana: 
 
-<img src="https://grafana-dashboard-badge.netlify.app/.netlify/functions/api/badge?id_dashboard=21378" alt="Grafana Dashboard Badge">
+<img src="https://grafana-dashboard-badge.netlify.app/.netlify/functions/api/badge?id_dashboard=21378" alt="Grafana Dashboard Download Badge">
+
+Revision Dashboard Grafana: 
+
+<img src="grafana-dashboard-badge.netlify.app/.netlify/functions/api/revision-badge?id_dashboard=21378" alt="Grafana Dashboard Revision Badge">
 
 ## Table of Contents
 
@@ -36,19 +40,19 @@ Download Dashboard Grafana:
 
 ## Project Overview
 
-The `Grafana Dashboard Badge` application retrieves the download count for a Grafana dashboard by scraping data from Grafana’s site and generates an SVG badge that shows the count. The functions for deployment are in `functions/api.js` for Netlify.
+The `Grafana Dashboard Badge` application retrieves the download count and others features for a Grafana dashboard by scraping data from Grafana’s site and generates an SVG badge that shows the count. The functions for deployment are in `functions/api.js` for Netlify.
 
 ## Badge
 
 Example of code integration:
 
-1. **Image Badge**
+1. **Image Badge** <img src="https://grafana-dashboard-badge.netlify.app/.netlify/functions/api/badge?id_dashboard=21378" alt="Grafana Dashboard Badge">
 
 ```html
 <img src="https://grafana-dashboard-badge.netlify.app/.netlify/functions/api/badge?id_dashboard=21378" alt="Grafana Dashboard Badge">
 ```
 
-2. **Link with Badge**
+2. **Link with Badge** <img src="https://grafana-dashboard-badge.netlify.app/.netlify/functions/api/badge?id_dashboard=21378" alt="Grafana Dashboard Badge">
 
 ```html
 <a href="https://grafana.com/dashboards/21378">
@@ -83,9 +87,14 @@ OK
 - **Query Parameters**:
   - `id_dashboard` (required): Grafana dashboard id
 
-**Example Request**:
+**Example Request Download**:
 ```bash
 curl "https://grafana-dashboard-badge.netlify.app/.netlify/functions/api/badge?id_dashboard=21378"
+```
+
+**Example Request Revision**:
+```bash
+curl "https://grafana-dashboard-badge.netlify.app/.netlify/functions/api/revision-badge?id_dashboard=21378"
 ```
 
 **Response**:
