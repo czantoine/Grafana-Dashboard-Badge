@@ -16,6 +16,7 @@
     "fs": "^0.0.1-security",
     "netlify-cli": "^17.37.2",
     "netlify-lambda": "^0.4.0",
+    "node-cache": "^5.1.2",
     "puppeteer": "^23.7.0",
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-stealth": "^2.11.2",

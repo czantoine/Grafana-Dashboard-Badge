@@ -2,9 +2,11 @@ const express = require('express');
 const axios = require('axios');
 const { makeBadge } = require('badge-maker');
 const serverless = require('serverless-http');
+const NodeCache = require('node-cache');
 
 const app = express();
 const router = express.Router();
+const cache = new NodeCache({ stdTTL: 900 });
 
 // Middleware to add CORS headers
 app.use((req, res, next) => {
@@ -26,8 +28,17 @@ router.get('/bad-syntax', (req, res) => {
     });
 });
 
+// Middleware to check cache
+const checkCache = (req, res, next) => {
+    const { id_dashboard } = req.query;
+    if (cache.has(id_dashboard)) {
+        return res.send(cache.get(id_dashboard));
+    }
+    next();
+};
+
 // Badge endpoint to generate SVG badge for downloads
-router.get('/badge', async (req, res) => {
+router.get('/badge', checkCache, async (req, res) => {
     const { id_dashboard } = req.query;
 
     // Check if id_dashboard parameter is provided
@@ -112,6 +123,8 @@ router.get('/badge', async (req, res) => {
 
         const svg = makeBadge(format);
 
+        cache.set(id_dashboard, svg); // Cache the response
+
         res.setHeader('Content-Type', 'image/svg+xml');
         res.send(svg);
     } catch (error) {
@@ -123,7 +136,7 @@ router.get('/badge', async (req, res) => {
 });
 
 // Revision badge endpoint to generate SVG badge for revision
-router.get('/revision-badge', async (req, res) => {
+router.get('/revision-badge', checkCache, async (req, res) => {
     const { id_dashboard } = req.query;
 
     // Check if id_dashboard parameter is provided
@@ -161,6 +174,8 @@ router.get('/revision-badge', async (req, res) => {
         };
 
         const svg = makeBadge(format);
+
+        cache.set(id_dashboard, svg);
 
         res.setHeader('Content-Type', 'image/svg+xml');
         res.send(svg);
