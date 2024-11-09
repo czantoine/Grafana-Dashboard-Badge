@@ -24,7 +24,7 @@ Download Dashboard Grafana:
 
 Revision Dashboard Grafana: 
 
-<img src="grafana-dashboard-badge.netlify.app/.netlify/functions/api/revision-badge?id_dashboard=21378" alt="Grafana Dashboard Revision Badge">
+<img src="https://grafana-dashboard-badge.netlify.app/.netlify/functions/api/revision-badge?id_dashboard=21378" alt="Grafana Dashboard Revision Badge">
 
 ## Table of Contents
 
