@@ -27,14 +27,14 @@ This table details the colors used in the `badge` endpoint for downloads based o
 | Very Good                 | 1,501 - 2,000                | `royalblue`   |
 | Good                      | 1,001 - 1,500                | `blue`        |
 | Medium                    | 761 - 1,000                  | `lightyellow` |
-| Low Low LowMedium         | 511 - 760                    | `yellow`      |
+| Low Medium                | 511 - 760                    | `yellow`      |
 | Low Low Medium            | 411 - 510                    | `darkyellow`  |
-| Low Medium                | 311 - 410                    | `orange`      |
+| Low Low Low Medium        | 311 - 410                    | `orange`      |
 | Low                       | 211 - 310                    | `darkorange`  |
 | Very Low                  | 111 - 210                    | `red`         |
-| Very Low                  | 61 - 110                     | `darkred`     |
-| Very Very Low             | 31 - 60                      | `firebrick`   |
-| Very Very Very Low        | 0 - 30                       | `brown`       |
+| Very Very Low             | 61 - 110                     | `darkred`     |
+| Very Very Very Low        | 31 - 60                      | `firebrick`   |
+| Very Very Very Very Low   | 0 - 30                       | `brown`       |
 
 ## Color Scheme for Badge: Revision
 
