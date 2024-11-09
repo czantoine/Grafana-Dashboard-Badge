@@ -36,7 +36,7 @@ This table details the colors used in the `badge` endpoint for downloads based o
 | Very Very Very Low        | 31 - 60                      | `firebrick`   |
 | Very Very Very Very Low   | 0 - 30                       | `brown`       |
 
-## Color Scheme for Badge: Revision
+## Badge: Revision
 
 This table details the colors used in the `revision-badge` endpoint for revisions based on revision count ranges.
 
