@@ -46,17 +46,17 @@ The `Grafana Dashboard Badge` application retrieves the download count and other
 
 Example of code integration:
 
-1. **Image Badge** <img src="https://grafana-dashboard-badge.netlify.app/.netlify/functions/api/badge?id_dashboard=21378" alt="Grafana Dashboard Badge">
+1. **Image Badge**
 
 ```html
-<img src="https://grafana-dashboard-badge.netlify.app/.netlify/functions/api/badge?id_dashboard=21378" alt="Grafana Dashboard Badge">
+<img src="https://grafana-dashboard-badge.netlify.app/.netlify/functions/api/badge?id_dashboard=21378" alt="Grafana Dashboard Download Badge">
 ```
 
-2. **Link with Badge** <img src="https://grafana-dashboard-badge.netlify.app/.netlify/functions/api/badge?id_dashboard=21378" alt="Grafana Dashboard Badge">
+2. **Link with Badge** 
 
 ```html
 <a href="https://grafana.com/dashboards/21378">
-    <img src="https://grafana-dashboard-badge.netlify.app/.netlify/functions/api/badge?id_dashboard=21378" alt="Grafana Dashboard Badge">
+    <img src="https://grafana-dashboard-badge.netlify.app/.netlify/functions/api/badge?id_dashboard=21378" alt="Grafana Dashboard Download Badge">
 </a>
 ```
 
@@ -87,12 +87,12 @@ OK
 - **Query Parameters**:
   - `id_dashboard` (required): Grafana dashboard id
 
-**Example Request Download**:
+**Example Request Download**: <img src="https://grafana-dashboard-badge.netlify.app/.netlify/functions/api/badge?id_dashboard=21378" alt="Grafana Dashboard Download Badge">
 ```bash
 curl "https://grafana-dashboard-badge.netlify.app/.netlify/functions/api/badge?id_dashboard=21378"
 ```
 
-**Example Request Revision**:
+**Example Request Revision**: <img src="https://grafana-dashboard-badge.netlify.app/.netlify/functions/api/revision-badge?id_dashboard=21378" alt="Grafana Dashboard Revision Badge">
 ```bash
 curl "https://grafana-dashboard-badge.netlify.app/.netlify/functions/api/revision-badge?id_dashboard=21378"
 ```
