@@ -2,11 +2,11 @@ const express = require('express');
 const axios = require('axios');
 const { makeBadge } = require('badge-maker');
 const serverless = require('serverless-http');
-const NodeCache = require('node-cache');
+const NodeCache = require('node-cache'); // Importing the caching module
 
 const app = express();
 const router = express.Router();
-const cache = new NodeCache({ stdTTL: 900 });
+const cache = new NodeCache({ stdTTL: 900 }); // Cache for 15 minutes
 
 // Middleware to add CORS headers
 app.use((req, res, next) => {
@@ -28,20 +28,10 @@ router.get('/bad-syntax', (req, res) => {
     });
 });
 
-// Middleware to check cache
-const checkCache = (req, res, next) => {
-    const { id_dashboard } = req.query;
-    if (cache.has(id_dashboard)) {
-        return res.send(cache.get(id_dashboard));
-    }
-    next();
-};
-
 // Badge endpoint to generate SVG badge for downloads
-router.get('/badge', checkCache, async (req, res) => {
-    const { id_dashboard } = req.query;
+router.get('/badge', async (req, res) => {
+    const { id_dashboard, text, color } = req.query;
 
-    // Check if id_dashboard parameter is provided
     if (!id_dashboard) {
         return res.status(400).json({
             error: 'Missing Parameters',
@@ -49,84 +39,18 @@ router.get('/badge', checkCache, async (req, res) => {
         });
     }
 
+    const cachedDownloads = cache.get(`downloads_${id_dashboard}`);
+    if (cachedDownloads) {
+        return generateBadgeResponse(res, cachedDownloads, 'Dashboard Downloads', text, color);
+    }
+
     try {
         const response = await axios.get(`https://grafana.com/api/dashboards/${id_dashboard}`);
         const { downloads } = response.data;
 
-        // Set badge color based on downloads with ultra-fine granularity
-        let color = 'blue';
-        if (downloads >= 200001) {
-            color = 'gold'; // Divine
-        } else if (downloads >= 150001) {
-            color = 'pink'; // Titan
-        } else if (downloads >= 100001) {
-            color = 'coral'; // Legendary Mythic
-        } else if (downloads >= 70001) {
-            color = 'purple'; // Mythic Legendary
-        } else if (downloads >= 50001) {
-            color = 'goldenrod'; // Ultra Epic
-        } else if (downloads >= 40001) {
-            color = 'cyan'; // Rare Legendary
-        } else if (downloads >= 30001) {
-            color = 'lightseagreen'; // Rare Epic
-        } else if (downloads >= 20001) {
-            color = 'olive'; // Legendary Superb
-        } else if (downloads >= 15001) {
-            color = 'forestgreen'; // Extreme Superb
-        } else if (downloads >= 10001) {
-            color = 'mediumseagreen'; // High Mythic
-        } else if (downloads >= 9001) {
-            color = 'skyblue'; // Mythic
-        } else if (downloads >= 8001) {
-            color = 'deepskyblue'; // Epic
-        } else if (downloads >= 7001) {
-            color = 'turquoise'; // Very High Legendary
-        } else if (downloads >= 6001) {
-            color = 'dodgerblue'; // Legendary
-        } else if (downloads >= 5001) {
-            color = 'mediumblue'; // Very Exceptional
-        } else if (downloads >= 4001) {
-            color = 'darkblue'; // Exceptional
-        } else if (downloads >= 3001) {
-            color = 'midnightblue'; // Extraordinary
-        } else if (downloads >= 2001) {
-            color = 'darkviolet'; // Exceptional
-        } else if (downloads >= 1501) {
-            color = 'royalblue'; // Very Good
-        } else if (downloads >= 1001) {
-            color = 'blue'; // Good
-        } else if (downloads >= 760) {
-            color = 'lightyellow'; // Medium
-        } else if (downloads >= 510) {
-            color = 'yellow'; // Medium
-        } else if (downloads >= 410) {
-            color = 'darkyellow'; // Medium
-        } else if (downloads >= 310) {
-            color = 'orange'; // Low Medium
-        } else if (downloads >= 210) {
-            color = 'darkorange'; // Low
-        } else if (downloads >= 110) {
-            color = 'red'; // Very Low
-        } else if (downloads >= 60) {
-            color = 'darkred'; // Very Very Low
-        } else if (downloads >= 30) {
-            color = 'firebrick'; // Very Very Low
-        } else if (downloads >= 0) {
-            color = 'brown'; // Very Very Low
-        }
+        cache.set(`downloads_${id_dashboard}`, downloads);
 
-        const format = {
-            label: 'Dashboard Downloads',
-            message: downloads.toString(),
-            color: color,
-        };
-
-        const svg = makeBadge(format);
-
-        cache.set(id_dashboard, svg); // Cache the response
-
-        res.setHeader('Content-Type', 'image/svg+xml');
-        res.send(svg);
+        generateBadgeResponse(res, downloads, 'Dashboard Downloads', text, color);
     } catch (error) {
         res.status(500).json({
             error: 'Error retrieving data',
@@ -136,10 +60,9 @@ router.get('/badge', checkCache, async (req, res) => {
 });
 
 // Revision badge endpoint to generate SVG badge for revision
-router.get('/revision-badge', checkCache, async (req, res) => {
-    const { id_dashboard } = req.query;
+router.get('/revision-badge', async (req, res) => {
+    const { id_dashboard, text, color } = req.query;
 
-    // Check if id_dashboard parameter is provided
     if (!id_dashboard) {
         return res.status(400).json({
             error: 'Missing Parameters',
@@ -147,38 +70,18 @@ router.get('/revision-badge', checkCache, async (req, res) => {
         });
     }
 
+    const cachedRevision = cache.get(`revision_${id_dashboard}`);
+    if (cachedRevision) {
+        return generateBadgeResponse(res, cachedRevision, 'Revision', text, color);
+    }
+
     try {
         const response = await axios.get(`https://grafana.com/api/dashboards/${id_dashboard}`);
         const { revision } = response.data;
 
-        // Set badge color based on revision
-        let color = 'blue';
-        if (revision >= 50) {
-            color = 'gold'; // High Revision
-        } else if (revision >= 40) {
-            color = 'pink'; // Significant Revision
-        } else if (revision >= 30) {
-            color = 'coral'; // Major Revision
-        } else if (revision >= 20) {
-            color = 'purple'; // Moderate Revision
-        } else if (revision >= 10) {
-            color = 'cyan'; // Minor Revision
-        } else {
-            color = 'green'; // Low Revision
-        }
+        cache.set(`revision_${id_dashboard}`, revision);
 
-        const format = {
-            label: 'Revision',
-            message: revision.toString(),
-            color: color,
-        };
-
-        const svg = makeBadge(format);
-
-        cache.set(id_dashboard, svg);
-
-        res.setHeader('Content-Type', 'image/svg+xml');
-        res.send(svg);
+        generateBadgeResponse(res, revision, 'Revision', text, color);
     } catch (error) {
         res.status(500).json({
             error: 'Error retrieving data',
@@ -186,6 +89,102 @@ router.get('/revision-badge', checkCache, async (req, res) => {
         });
     }
 });
+
+// Function to generate the badge response
+function generateBadgeResponse(res, value, label, text, color) {
+    // Use custom text and color if provided
+    const badgeLabel = text || label;
+    const badgeColor = color || determineColor(value, label);
+    
+    const format = {
+        label: badgeLabel,
+        message: value.toString(),
+        color: badgeColor,
+    };
+    const svg = makeBadge(format);
+    res.setHeader('Content-Type', 'image/svg+xml');
+    res.send(svg);
+}
+
+// Function to determine the color based on the value (downloads or revision)
+function determineColor(value, label) {
+    if (label === 'Dashboard Downloads') {
+        if (value >= 200001) {
+            return 'gold';
+        } else if (value >= 150001) {
+            return 'pink';
+        } else if (value >= 100001) {
+            return 'coral';
+        } else if (value >= 70001) {
+            return 'purple';
+        } else if (value >= 50001) {
+            return 'goldenrod';
+        } else if (value >= 40001) {
+            return 'cyan';
+        } else if (value >= 30001) {
+            return 'lightseagreen';
+        } else if (value >= 20001) {
+            return 'olive';
+        } else if (value >= 15001) {
+            return 'forestgreen';
+        } else if (value >= 10001) {
+            return 'mediumseagreen';
+        } else if (value >= 9001) {
+            return 'skyblue';
+        } else if (value >= 8001) {
+            return 'deepskyblue';
+        } else if (value >= 7001) {
+            return 'turquoise';
+        } else if (value >= 6001) {
+            return 'dodgerblue';
+        } else if (value >= 5001) {
+            return 'mediumblue';
+        } else if (value >= 4001) {
+            return 'darkblue';
+        } else if (value >= 3001) {
+            return 'midnightblue';
+        } else if (value >= 2001) {
+            return 'darkviolet';
+        } else if (value >= 1501) {
+            return 'royalblue';
+        } else if (value >= 1001) {
+            return 'blue';
+        } else if (value >= 760) {
+            return 'lightyellow';
+        } else if (value >= 510) {
+            return 'yellow';
+        } else if (value >= 410) {
+            return 'darkyellow';
+        } else if (value >= 310) {
+            return 'orange';
+        } else if (value >= 210) {
+            return 'darkorange';
+        } else if (value >= 110) {
+            return 'red';
+        } else if (value >= 60) {
+            return 'darkred';
+        } else if (value >= 30) {
+            return 'firebrick';
+        } else {
+            return 'brown';
+        }
+    } else if (label === 'Revision') {
+        if (value >= 50) {
+            return 'gold';
+        } else if (value >= 40) {
+            return 'pink';
+        } else if (value >= 30) {
+            return 'coral';
+        } else if (value >= 20) {
+            return 'purple';
+        } else if (value >= 10) {
+            return 'cyan';
+        } else {
+            return 'green';
+        }
+    }
+    return 'blue';
+}
 
 app.use('/.netlify/functions/api', router);
 
