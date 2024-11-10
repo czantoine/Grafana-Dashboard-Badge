@@ -12,6 +12,7 @@
 
 **Live Example:**
 - Download Count Badge: ![Download Badge](https://grafana-dashboard-badge.netlify.app/.netlify/functions/api/badge?id_dashboard=21378)
+- Download Count Badge with logo : ![Download Badge](https://grafana-dashboard-badge.netlify.app/.netlify/functions/api/badge?id_dashboard=21378&logo=true)
 - Revision Badge: ![Revision Badge](https://grafana-dashboard-badge.netlify.app/.netlify/functions/api/revision-badge?id_dashboard=21378)
 
 ---
