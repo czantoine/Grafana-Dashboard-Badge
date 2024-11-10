@@ -56,18 +56,19 @@ Here’s how you can use the badges in your project or website:
 
 You can customize the badge with optional parameters for text and color to better fit your design.
 
-![Custom Grafana Dashboard Badge](https://grafana-dashboard-badge.netlify.app/.netlify/functions/api/badge?id_dashboard=21378&text=My%20Custom%20Badge&color=blue)
+![Custom Grafana Dashboard Badge with Logo](https://grafana-dashboard-badge.netlify.app/.netlify/functions/api/badge?id_dashboard=21378&text=My%20Custom%20Badge&color=blue&logo=true)
 
 - **Parameters**:
     - `text` (default: "Dashboard Downloads"): Set custom text.
     - `color` (default: auto-generated based on download count): Define a specific color in hex or color name.
+    - `logo` (optional): Set to `true` to add a Grafana logo to the badge.
 
 Example of the default auto-generated based on download count [here](ColorScheme.md).
 
 **Example**:
 
 ```html
-<img src="https://grafana-dashboard-badge.netlify.app/.netlify/functions/api/badge?id_dashboard=21378&text=Popularity&color=blue" alt="Custom Grafana Badge">
+<img src="https://grafana-dashboard-badge.netlify.app/.netlify/functions/api/badge?id_dashboard=21378&text=Popularity&color=blue&logo=true" alt="Custom Grafana Badge">
 ```
 
 ## API Documentation
@@ -82,11 +83,12 @@ Example of the default auto-generated based on download count [here](ColorScheme
 - `id_dashboard` (required): The Grafana dashboard ID.
 - `text` (optional): Custom label text.
 - `color` (optional): Custom color for the badge.
+- `logo` (optional): Set to `true` to add a Grafana logo.
 
 **Example**:
 
 ```bash
-curl "https://grafana-dashboard-badge.netlify.app/.netlify/functions/api/badge?id_dashboard=21378&text=Downloads&color=green"
+curl "https://grafana-dashboard-badge.netlify.app/.netlify/functions/api/badge?id_dashboard=21378&text=Downloads&color=green&logo=true"
 ```
 
 ## Development with Netlify

@@ -30,7 +30,7 @@ router.get('/bad-syntax', (req, res) => {
 
 // Badge endpoint to generate SVG badge for downloads
 router.get('/badge', async (req, res) => {
-    const { id_dashboard, text, color } = req.query;
+    const { id_dashboard, text, color, logo } = req.query;
 
     if (!id_dashboard) {
         return res.status(400).json({
@@ -41,7 +41,7 @@ router.get('/badge', async (req, res) => {
 
     const cachedDownloads = cache.get(`downloads_${id_dashboard}`);
     if (cachedDownloads) {
-        return generateBadgeResponse(res, cachedDownloads, 'Dashboard Downloads', text, color);
+        return generateBadgeResponse(res, cachedDownloads, 'Dashboard Downloads', text, color, logo);
     }
 
     try {
@@ -50,7 +50,7 @@ router.get('/badge', async (req, res) => {
 
         cache.set(`downloads_${id_dashboard}`, downloads);
 
-        generateBadgeResponse(res, downloads, 'Dashboard Downloads', text, color);
+        generateBadgeResponse(res, downloads, 'Dashboard Downloads', text, color, logo);
     } catch (error) {
         res.status(500).json({
             error: 'Error retrieving data',
@@ -61,7 +61,7 @@ router.get('/badge', async (req, res) => {
 
 // Revision badge endpoint to generate SVG badge for revision
 router.get('/revision-badge', async (req, res) => {
-    const { id_dashboard, text, color } = req.query;
+    const { id_dashboard, text, color, logo } = req.query;
 
     if (!id_dashboard) {
         return res.status(400).json({
@@ -72,7 +72,7 @@ router.get('/revision-badge', async (req, res) => {
 
     const cachedRevision = cache.get(`revision_${id_dashboard}`);
     if (cachedRevision) {
-        return generateBadgeResponse(res, cachedRevision, 'Revision', text, color);
+        return generateBadgeResponse(res, cachedRevision, 'Revision', text, color, logo);
     }
 
     try {
@@ -81,7 +81,7 @@ router.get('/revision-badge', async (req, res) => {
 
         cache.set(`revision_${id_dashboard}`, revision);
 
-        generateBadgeResponse(res, revision, 'Revision', text, color);
+        generateBadgeResponse(res, revision, 'Revision', text, color, logo);
     } catch (error) {
         res.status(500).json({
             error: 'Error retrieving data',
@@ -91,7 +91,7 @@ router.get('/revision-badge', async (req, res) => {
 });
 
 // Function to generate the badge response
-function generateBadgeResponse(res, value, label, text, color) {
+async function generateBadgeResponse(res, value, label, text, color, logo) {
     // Use custom text and color if provided
     const badgeLabel = text || label;
     const badgeColor = color || determineColor(value, label);
@@ -101,6 +101,20 @@ function generateBadgeResponse(res, value, label, text, color) {
         message: value.toString(),
         color: badgeColor,
     };
+
+    if (logo) {
+        try {
+            const logoResponse = await axios.get('https://grafana.com/static/assets/img/fav32.png', { responseType: 'arraybuffer' });
+            const logoBase64 = Buffer.from(logoResponse.data, 'binary').toString('base64');
+            format.logoBase64 = `data:image/png;base64,${logoBase64}`;
+        } catch (error) {
+            return res.status(500).json({
+                error: 'Error retrieving logo',
+                message: error.message
+            });
+        }
+    }
+
     const svg = makeBadge(format);
     res.setHeader('Content-Type', 'image/svg+xml');
     res.send(svg);
