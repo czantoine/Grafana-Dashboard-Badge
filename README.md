@@ -8,6 +8,10 @@
     <img alt="Last Commit" src="https://img.shields.io/github/last-commit/czantoine/Grafana-Dashboard-Badge">
 </p>
 
+If you enjoy my projects and want to support my work, consider buying me a coffee! ☕️
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/V7V22V693)
+
 `Grafana Dashboard Badge` is a tool to retrieve download count metrics for a Grafana dashboard and generate badges displaying these metrics. These badges are an easy way to visualize and share the popularity of your dashboards.
 
 **Live Example:**
